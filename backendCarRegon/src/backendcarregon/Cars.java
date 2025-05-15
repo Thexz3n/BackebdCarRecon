@@ -27,6 +27,34 @@ public class Cars extends Vehicle {
         return CarID;
     }
 
+    public void firstDisplay() {
+        System.out.println("Welcome to the Car Registration System");
+        System.out.println("1. Register a new car");
+        System.out.println("2. Update car information");
+        System.out.println("3. Delete a car");
+        System.out.println("4. Exit");
+        System.out.print("Please select an option: ");
+        int choice = user.nextInt();
+
+        switch (choice) {
+            case 1:
+                inputDetaile();
+                break;
+            case 2:
+                updateInput();
+                break;
+            case 3:
+                deleteInput();
+                break;
+            case 4:
+                System.out.println("Exiting...");
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Invalid choice. Please try again.");
+        }
+    }
+
     @Override
     public void inputDetaile() {
         super.inputDetaile();
@@ -37,7 +65,7 @@ public class Cars extends Vehicle {
         String platenumber = user.nextLine();
 
         System.out.print("Write the carID of a car: ");
-        int carid = user.nextInt();
+        String carid = user.nextLine();
         createCar(super.getName(), super.getBrand(), super.getColor(), super.getModel(), super.isPartnership(), super.isFormalleted(), type, platenumber, carid);
     }
 
@@ -50,20 +78,22 @@ public class Cars extends Vehicle {
         System.out.print("Write the new plate number of a car: ");
         String platenumber = user.nextLine();
 
-        System.out.print("Write the new carID of a car: ");
-        int carid = user.nextInt();
 
         System.out.print("Write the carID of a car: ");
-        int car = user.nextInt();
+        String car = user.nextLine();
+        updateCar(super.getName(), super.getBrand(), super.getColor(), super.getModel(), super.isPartnership(), super.isFormalleted(), type, platenumber,  car);
     }
 
     @Override
     public void deleteInput() {
         System.out.print("Write the CarID that you want a delete: ");
-        int car = user.nextInt();
+        String car = user.nextLine();
+
+        deleteCar(car);
+        System.out.println("Car with ID " + car + " has been deleted.");
     }
 
-    public void createCar(String Name, String Brand, String Color, int Model, boolean partnership, boolean formalleted, String type, String platenumber, int carid) {
+    public void createCar(String Name, String Brand, String Color, int Model, boolean partnership, boolean formalleted, String type, String platenumber, String carid) {
         String sql = "INSERT INTO cars (CarID, name, Brand, Color, Model, partnership, formalleted, Type, plateNumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
 
@@ -77,7 +107,7 @@ public class Cars extends Vehicle {
             pst.setBoolean(6, formalleted);
             pst.setString(7, type);
             pst.setString(8, platenumber);
-            pst.setInt(9, carid);
+            pst.setString(9, carid);
 
             int rowsUpdated = pst.executeUpdate();
             if (rowsUpdated > 0) {
@@ -92,21 +122,21 @@ public class Cars extends Vehicle {
 
     }
 
-    public void updateCar(String Name, String Brand, String Color, int Model, boolean partnership, boolean formalleted, String type, String platenumber, int newcarid, int carid) {
-        String sql = "UPDATE cars SET CarID=?, name = ?, Brand = ?, Color = ?, Model = ?, partnership = ?, formalleted = ?, Type = ?, plateNumber = ?,  WHERE CarID = ?";
+    public void updateCar(String Name, String Brand, String Color, int Model, boolean partnership, boolean formalleted, String type, String platenumber, String carid) {
+        String sql = "UPDATE cars SET name = ?, Brand = ?, Color = ?, Model = ?, partnership = ?, formalleted = ?, Type = ?, plateNumber = ?,  WHERE CarID = ?";
         try {
             pst = con.prepareStatement(sql);
 
-            pst.setInt(1, newcarid);
-            pst.setString(2, Name);
-            pst.setString(3, Brand);
-            pst.setString(4, Color);
-            pst.setInt(5, Model);
-            pst.setBoolean(6, partnership);
-            pst.setBoolean(7, formalleted);
-            pst.setString(8, type);
-            pst.setString(9, platenumber);
-            pst.setInt(10, carid); // CarID is used to identify the row to update
+        
+           
+            pst.setString(1, Brand);
+            pst.setString(2, Color);
+            pst.setInt(3, Model);
+            pst.setBoolean(4, partnership);
+            pst.setBoolean(5, formalleted);
+            pst.setString(6, type);
+            pst.setString(7, platenumber);
+            pst.setString(8, carid); // CarID is used to identify the row to update
 
             int rowsUpdated = pst.executeUpdate();
             if (rowsUpdated > 0) {
@@ -120,24 +150,23 @@ public class Cars extends Vehicle {
         }
     }
 
-    public void deleteCar(int carid) {
-        String sql = "DELETE FROM cars WHERE ?";
 
-        try {
-            
-            pst = con.prepareStatement(sql);
-            
-            pst.setInt(1, carid);
+    public void deleteCar(String carid) {
+    String sql = "DELETE FROM cars WHERE CarID = ?";
 
-            int rowsUpdated = pst.executeUpdate();
-            if (rowsUpdated > 0) {
-                JOptionPane.showMessageDialog(null, "Car record updated successfully", "Update Success", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "No car found with the given CarID", "Update Failed", JOptionPane.WARNING_MESSAGE);
-            }
+    try {
+        pst = con.prepareStatement(sql);
+        pst.setString(1, carid);
 
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        int rowsUpdated = pst.executeUpdate();
+        if (rowsUpdated > 0) {
+            JOptionPane.showMessageDialog(null, "Car record deleted successfully", "Delete Success", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "No car found with the given CarID", "Delete Failed", JOptionPane.WARNING_MESSAGE);
         }
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
     }
+}
 }

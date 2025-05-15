@@ -25,7 +25,6 @@ public class Admin extends Person {
         this.securityCode = securitycode;
         this.Username = username;
         this.Password = password;
-
     }
 
     public int getAdminID() {

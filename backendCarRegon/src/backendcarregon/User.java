@@ -47,6 +47,48 @@ public class User extends Person {
     }
 
     @Override
+    public void firstDisplay(){
+        System.out.println("Welcome to the User Management System");
+        System.out.println("Choose an option:");
+        System.out.println("1. Create Account");
+        System.out.println("2. Update Account");
+        System.out.println("3. Delete Account");
+        System.out.println("4. Search by ID");
+        System.out.println("5. Search by Fullname");
+        System.out.println("6. Search by Phone");
+        System.out.println("7. Display All Users");
+        System.out.println("8. Exit");
+        System.out.print("Enter your choice: ");
+        int choice = user.nextInt();
+        switch (choice) {
+            case 1:
+                inputDetaile();
+                break;
+            case 2:
+                updateInputDetaile();
+                break;
+            case 3:
+                deleteEmployee();
+                break;
+            case 4:
+                searchingByID();
+                break;
+            case 5:
+                searchingByFullname();
+                break;
+            case 6:
+                searchingByPhone();
+                break;
+            case 7:
+                System.out.println("Exiting...");
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Invalid choice. Please try again.");
+        }
+        
+    }
+    @Override
     public void inputDetaile() {
         super.inputDetaile();
         System.out.println("Write your EmployeeID: ");
@@ -189,7 +231,7 @@ public class User extends Person {
     public void searchingByFullname(){
         System.out.print("Enter the User Fullname to search: ");
         String name = user.nextLine();
-        String sql = "SELECT * FROM admin WHERE Name=?";
+        String sql = "SELECT * FROM user WHERE Name=?";
         try {
             pst = con.prepareStatement(sql);
             pst.setString(1, name);
@@ -217,7 +259,7 @@ public class User extends Person {
     public void searchingByPhone(){
     System.out.print("Enter the User Phone to search: ");
         String phone = user.nextLine();
-        String sql = "SELECT * FROM admin WHERE Phone=?";
+        String sql = "SELECT * FROM user WHERE Phone=?";
         try {
             pst = con.prepareStatement(sql);
             pst.setString(1, phone);
@@ -240,4 +282,28 @@ public class User extends Person {
             JOptionPane.showMessageDialog(null, e);
         }
     }
+
+    public void displayAllUsers() {
+        try {
+            String sql = "SELECT * FROM user";
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                System.out.println("User ID: " + rs.getString("UserID"));
+                System.out.println("Employee ID: " + rs.getInt("EmployeeID"));
+                System.out.println("Name: " + rs.getString("Name"));
+                System.out.println("Phone: " + rs.getString("Phone"));
+                System.out.println("Email: " + rs.getString("Email"));
+                System.out.println("Address: " + rs.getString("Address"));
+                System.out.println("Role: " + rs.getString("Role"));
+                System.out.println("Security Code: " + rs.getString("SecurityCode"));
+                System.out.println("Username: " + rs.getString("Username"));
+                System.out.println("-----------------------------");
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+
+
 }

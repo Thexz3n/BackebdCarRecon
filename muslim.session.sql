@@ -1,0 +1,6 @@
+CREATE TABLE loginHistory(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    userId INT NOT NULL,
+    loginTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (userId) REFERENCES users(id)
+);

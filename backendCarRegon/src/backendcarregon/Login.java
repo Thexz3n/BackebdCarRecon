@@ -51,6 +51,8 @@ public class Login {
                     if (rs.next()) {
                         JOptionPane.showMessageDialog(null, "Login successful");
                         System.out.println("Welcome Admin: " + rs.getString("name"));
+                        Admin admin = new Admin();
+                        admin.firstDisplay();
                     } else {
                         JOptionPane.showMessageDialog(null, "Login failed");
                     }
@@ -70,6 +72,8 @@ public class Login {
                     if (rs.next()) {
                         JOptionPane.showMessageDialog(null, "Login successful");
                         System.out.println("Welcome User: " + rs.getString("name"));
+                        User user = new User();
+                        user.firstDisplay();
                         
                     } else {
                         JOptionPane.showMessageDialog(null, "Login failed");

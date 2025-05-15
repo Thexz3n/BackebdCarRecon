@@ -23,7 +23,7 @@ public class Person {
     
     public Person(){
         getConnection();
-        inputDetaile();
+        firstDisplay();
         createPerson(getName(), getPhone(), getEmail(), getAddres(), getRole());
     }
     
@@ -68,6 +68,45 @@ public class Person {
         
     }
     
+    public void firstDisplay(){
+        System.out.println("Welcome to the Employee Management System");
+        System.out.println("1. Create Employee");
+        System.out.println("2. Update Employee");
+        System.out.println("3. Delete Employee");
+        System.out.println("4. Search Employee by ID");
+        System.out.println("5. Search Employee by Full Name");
+        System.out.println("6. Search Employee by Phone Number");
+        System.out.println("7. Exit");
+        System.out.print("Choose an option: ");
+        int choice = user.nextInt();
+
+        switch (choice) {
+            case 1:
+                inputDetaile();
+                break;
+            case 2:
+                updateInputDetaile();
+                break;
+            case 3:
+                deleteEmployee();
+                break;
+            case 4:
+                searchingByID();
+                break;
+            case 5:
+                searchingByFullname();
+                break;
+            case 6:
+                searchingByPhone();
+                break;
+            case 7:
+                System.out.println("Exiting...");
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Invalid choice. Please try again.");
+        }
+    }
     
     public void inputDetaile(){
         System.out.print("Write your full name: ");
@@ -103,7 +142,7 @@ public class Person {
     }
     
     public void updateInputDetaile(){
-        System.out.print("Write the EmployeeID that you want change data:  ");
+        System.out.print("Write the EmployeeID that you want change data: ");
         int employee = user.nextInt();
         
         System.out.print("Write new full name: ");
@@ -210,7 +249,7 @@ public class Person {
    
 
    public void searchingByID(){
-         System.out.print("Write the EmployeeID that you want to search: ");
+         System.out.print("Write the UserID that you want to search: ");
          int employee = user.nextInt();
          
          String sql = "SELECT * FROM employee WHERE EmployeeID=?";
